@@ -4,6 +4,8 @@
 var http = require('http');
 
 function onRequest(request, response){
+
+    //receive request
     if(request.method == 'POST'){
         var body = "";
         request.on('data', function (chunk) {

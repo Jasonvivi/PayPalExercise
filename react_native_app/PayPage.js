@@ -12,20 +12,19 @@ import {
 
 var styles = StyleSheet.create({
   titleText: {
-  fontSize: 12,
-  color: 'black',
-  fontWeight: 'bold',
-
+    fontSize: 12,
+    color: 'black',
+    fontWeight: 'bold',
   },
   headingText: {
-  marginTop:5,
-  fontSize: 15,
-  color: 'black',
+    marginTop:5,
+    fontSize: 15,
+    color: 'black',
   },
   subHeadingText: {
-  marginTop:5,
-  fontSize: 10,
-  color: 'black',
+    marginTop:5,
+    fontSize: 10,
+    color: 'black',
   },
   arrow: {
     width: 30,
@@ -147,7 +146,6 @@ payButtonPress(){
   var query = 'http://localhost:8888/';
   var resquestBody = this.props.result;
   this._executeQuery(query);
-
 }
 
 _executeQuery(query) {
@@ -182,48 +180,49 @@ _executeQuery(query) {
   console.log(response);
   this.setState({ message: '' });
   if (response.error === '200') {
-this.props.navigator.push({
-  title: 'PayResult',
-  component: PayResult,
-  passProps: {result: response}
-});  } else {
-    this.setState({ message: 'Pay error'});
+    this.setState({ message: 'Pay Success'});
+    this.props.navigator.push({
+      title: 'Pay Result',
+      component: PayResult,
+      passProps: {result: response, message:this.state.message}
+      });  
+    } else {
+      this.setState({ message: 'Pay error'});
   }
 }
 
 renderFooter() {
     return (
       <View>
-          <Text style={styles.description}>{this.state.message}</Text>
-          <View style={styles.totalContainer}>
-            <View  style={styles.textContainer}>
-              <Text style={styles.priceTitleText}>Total</Text>
-              </View>
-            <View  style={styles.textContainer}>
-              <Text style={styles.priceText}>{this.state.totalPrice}</Text>
-              </View>
-            <Image style={styles.arrow} source={require('./Resource/right_arrow.png')} />
-          </View>
+        <Text style={styles.description}>{this.state.message}</Text>
+        <View style={styles.totalContainer}>
+          <View  style={styles.textContainer}>
+            <Text style={styles.priceTitleText}>Total</Text>
+            </View>
+          <View  style={styles.textContainer}>
+            <Text style={styles.priceText}>{this.state.totalPrice}</Text>
+            </View>
+          <Image style={styles.arrow} source={require('./Resource/right_arrow.png')} />
+        </View>
 
-          <View style={styles.rowContainer}>
+        <View style={styles.rowContainer}>
           <Text style={styles.titleText}>View 
-          <Text style={styles.readBigBlueText}>
-           PayPal Policies 
+            <Text style={styles.readBigBlueText}>PayPal Policies 
+            </Text>
+            and your payment method rights
           </Text>
-          and your payment method rights</Text>
-          </View>
+        </View>
           <TouchableHighlight style={styles.payButton}>
             <Text style={styles.payButtonText} onPress={this.payButtonPress.bind(this)}>Pay Now</Text>
           </TouchableHighlight>
           <View style={styles.rowContainer}>
-          <Text style={styles.titleText}>if money is added to your PayPal balance before this transaction completes, the additional balance maybe used to complete your payment. 
-          <Text style={styles.readSmallBlueText}>
-          PayPal Policies 
-          </Text>
-          </Text>
+            <Text style={styles.titleText}>if money is added to your PayPal balance before this transaction completes, the additional balance maybe used to complete your payment. 
+              <Text style={styles.readSmallBlueText}>
+              PayPal Policies 
+              </Text>
+            </Text>
           </View>
-    </View>
-
+        </View>
   )}
 
 render() {

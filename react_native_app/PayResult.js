@@ -25,13 +25,14 @@ class PayResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      message:this.props.message,
     };
   }
  
 render() {
     return (
         <View >
-          <Text style={styles.titleText}>Pay success</Text>
+          <Text style={styles.titleText}>{this.state.message}</Text>
       </View>
     );
   }
