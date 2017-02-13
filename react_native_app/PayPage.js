@@ -109,7 +109,7 @@ class PayPage extends Component {
   constructor(props) {
     super(props);
     var dataSource = new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1.lister_url !== r2.lister_url});
+        rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: dataSource.cloneWithRows(this.props.result.listings),
       totalPrice:this.props.result.total,
@@ -194,7 +194,6 @@ _executeQuery(query) {
 renderFooter() {
     return (
       <View>
-        <Text style={styles.description}>{this.state.message}</Text>
         <View style={styles.totalContainer}>
           <View  style={styles.textContainer}>
             <Text style={styles.priceTitleText}>Total</Text>
@@ -212,8 +211,8 @@ renderFooter() {
             and your payment method rights
           </Text>
         </View>
-          <TouchableHighlight style={styles.payButton}>
-            <Text style={styles.payButtonText} onPress={this.payButtonPress.bind(this)}>Pay Now</Text>
+          <TouchableHighlight style={styles.payButton} onPress={this.payButtonPress.bind(this)}>
+            <Text style={styles.payButtonText} >Pay Now</Text>
           </TouchableHighlight>
           <View style={styles.rowContainer}>
             <Text style={styles.titleText}>if money is added to your PayPal balance before this transaction completes, the additional balance maybe used to complete your payment. 
