@@ -13,7 +13,8 @@ function onRequest(request, response){
             console.log('body: ' + body);
         })
     }
-    response.writeHead(200,{"Content-Type":"application/json"});
+
+    //return json
     var data = {};
     data['response'] = {
         'listings':[
@@ -23,6 +24,7 @@ function onRequest(request, response){
         'total':'$28.98',
         'error':'200',
     }
+    response.writeHead(200,{"Content-Type":"application/json"});
     response.write(JSON.stringify(data));
     response.end();
 }

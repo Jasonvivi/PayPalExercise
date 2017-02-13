@@ -16,15 +16,13 @@ var styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     alignSelf: 'center'
   },
   button: {
     height: 36,
     width:100,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
+    backgroundColor: '#255eba',
     borderRadius: 8,
     alignSelf: 'center',
   },

@@ -29,7 +29,7 @@ class react_native_app extends React.Component {
             <ReactNative.NavigatorIOS
         style={styles.container}
         initialRoute={{
-            title: 'PayPage Exercise',
+            title: 'PayPage',
                 component: StartPage,
         }}/>
     );
