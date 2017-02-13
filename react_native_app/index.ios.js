@@ -4,50 +4,38 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+'use strict'
 
-export default class react_native_app extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+// loads modules and assigns them to variables euqivalent to linking and importing libraries.
+var React = require('react');
+var ReactNative = require('react-native');
+var StartPage = require('./StartPage');
+
+var styles = ReactNative.StyleSheet.create({
+  text:{
+    color:'black',
+    backgroundColor:'white',
+    fontSize:30,
+    margin:80
+  },
+    container: {
+        flex: 1
+    }
+})
+
+class react_native_app extends React.Component {
+    render() {
+        return (
+            <ReactNative.NavigatorIOS
+        style={styles.container}
+        initialRoute={{
+            title: 'PayPage Exercise',
+                component: StartPage,
+        }}/>
     );
-  }
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+//entry point to the application and root component.
+ReactNative.AppRegistry.registerComponent('react_native_app', function() { return react_native_app });
 
-AppRegistry.registerComponent('react_native_app', () => react_native_app);
