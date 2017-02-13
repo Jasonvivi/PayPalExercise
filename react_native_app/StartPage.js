@@ -31,22 +31,6 @@ var styles = StyleSheet.create({
 });
 var PayPage = require('./PayPage');
 
-function urlForQueryAndPage(key, value, pageNumber) {
-  return 'http://localhost:8888/'
-};
-
-function createRequest(){
-   var data = {};
-   data['request']= {
-        'name':'Kenneth Thomepson',
-        'addr':'8114 Grow Drive #9, Cape Neddick, ME 03902',
-        'payinfo':'BANK OF AMERICA CHECKING x-5567',
-        'paydetail':'Visa x-4512(backup)',
-        'amount':'$28.98',
-    }
-    return data;
-}
-
 class StartPage extends Component {
 constructor(props) {
   super(props);
@@ -61,50 +45,40 @@ onSearchTextChanged(event) {
   console.log(this.state.searchString);
 }
 
-_executeQuery(query,requestBody) {
+_executeQuery(query) {
   console.log(query);
   this.setState({ isLoading: true });
   fetch(query,{
-  method: 'post',
+  method: 'get',
   dataType: 'json',
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({
-        'name':'Kenneth Thomepson',
-        'addr':'8114 Grow Drive #9, Cape Neddick, ME 03902',
-        'payinfo':'BANK OF AMERICA CHECKING x-5567',
-        'paydetail':'Visa x-4512(backup)',
-        'amount':'$28.98',
-  })
 })
   .then(response => response.json())
   .then(json => this._handleResponse(json.response))
   .catch(error =>
      this.setState({
-      isLoading: false,
       message: 'Something bad happened ' + error
    }));
 }
 
- _handleResponse(response) {
-  console.log(response);
-  this.setState({ isLoading: false , message: '' });
-  if (response.error === '200') {
+ _handleResponse(result) {
+  this.setState({ message: '' });
+  if (result.error === '200') {
 this.props.navigator.push({
   title: 'PayPage',
   component: PayPage,
-  passProps: {result: response}
+  passProps: {result: result}
 });  } else {
     this.setState({ message: 'Pay error'});
   }
 }
 
 onSearchPressed() {
-  var query = urlForQueryAndPage('place_name', this.state.searchString, 1);
-  var requestBody = createRequest();
-  this._executeQuery(query, requestBody);
+  var query = 'http://localhost:8888/';
+  this._executeQuery(query);
 }
 
 render() {

@@ -4,13 +4,15 @@
 var http = require('http');
 
 function onRequest(request, response){
-    var body = "";
-    request.on('data', function (chunk) {
-        body += chunk;
-    });
-    request.on('end', function () {
-        console.log('body: ' + body);
-    })
+    if(request.method == 'POST'){
+        var body = "";
+        request.on('data', function (chunk) {
+            body += chunk;
+        });
+        request.on('end', function () {
+            console.log('body: ' + body);
+        })
+    }
     response.writeHead(200,{"Content-Type":"application/json"});
     var data = {};
     data['response'] = {

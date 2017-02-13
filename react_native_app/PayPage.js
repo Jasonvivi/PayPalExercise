@@ -55,7 +55,6 @@ var styles = StyleSheet.create({
     width: 350,
     backgroundColor: '#255eba',
     borderRadius: 8,
-    marginTop: 10,
     alignSelf: 'center',
     justifyContent: 'center'
   },
@@ -91,13 +90,12 @@ var styles = StyleSheet.create({
   },
   footerRowContainer: {
     padding: 20,
-    marginTop: 10,
     alignItems: 'center'
   },  
   totalContainer:{
     alignItems: 'center' ,
     justifyContent: 'center', 
-    backgroundColor:'grey',
+    backgroundColor:'#dedfe0',
     flexDirection: 'row',
     padding: 20
   },
@@ -106,8 +104,9 @@ var styles = StyleSheet.create({
   },
 });
 
-class PayPage extends Component {
+var PayResult = require('./PayResult');
 
+class PayPage extends Component {
   constructor(props) {
     super(props);
     var dataSource = new ListView.DataSource({
@@ -115,7 +114,9 @@ class PayPage extends Component {
     this.state = {
       dataSource: dataSource.cloneWithRows(this.props.result.listings),
       totalPrice:this.props.result.total,
+      message: ''
     };
+    console.log(this.state.totalPrice)
   }
  
 renderRow(rowData, sectionID, rowID) {
@@ -141,15 +142,65 @@ rowPressed(rowID) {
   console.log('edit '+rowID+' row');
 }
 
+payButtonPress(){
+  console.log("press pay now");
+  var query = 'http://localhost:8888/';
+  var resquestBody = this.props.result;
+  this._executeQuery(query);
+
+}
+
+_executeQuery(query) {
+  console.log(query);
+  fetch(query,{
+  method: 'post',
+  dataType: 'json',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+        'request':{
+        'listings':[
+            {'title':'Ship to', 'heading':'Kenneth Thomepson', 'subheading':'8114 Grow Drive #9, Cape Neddick, ME 03902'},
+            {'title':'Pay with','heading':'BANK OF AMERICA CHECKING x-5567', 'subheading':'Visa x-4512(backup)'},
+        ],
+        'total':'$28.98',
+        'error':'200',
+      }
+  })
+})
+  .then(response => response.json())
+  .then(json => this._handleResponse(json.response))
+  .catch(error =>
+     this.setState({
+      message: 'Something bad happened ' + error
+   }));
+}
+
+ _handleResponse(response) {
+  console.log(response);
+  this.setState({ message: '' });
+  if (response.error === '200') {
+this.props.navigator.push({
+  title: 'PayResult',
+  component: PayResult,
+  passProps: {result: response}
+});  } else {
+    this.setState({ message: 'Pay error'});
+  }
+}
+
 renderFooter() {
     return (
       <View>
+          <Text style={styles.description}>{this.state.message}</Text>
           <View style={styles.totalContainer}>
             <View  style={styles.textContainer}>
               <Text style={styles.priceTitleText}>Total</Text>
               </View>
             <View  style={styles.textContainer}>
-              <Text style={styles.priceText}>12</Text>
+              <Text style={styles.priceText}>{this.state.totalPrice}</Text>
               </View>
             <Image style={styles.arrow} source={require('./Resource/right_arrow.png')} />
           </View>
@@ -157,12 +208,12 @@ renderFooter() {
           <View style={styles.rowContainer}>
           <Text style={styles.titleText}>View 
           <Text style={styles.readBigBlueText}>
-          PayPal Policies 
+           PayPal Policies 
           </Text>
           and your payment method rights</Text>
           </View>
           <TouchableHighlight style={styles.payButton}>
-            <Text style={styles.payButtonText}>Pay Now</Text>
+            <Text style={styles.payButtonText} onPress={this.payButtonPress.bind(this)}>Pay Now</Text>
           </TouchableHighlight>
           <View style={styles.rowContainer}>
           <Text style={styles.titleText}>if money is added to your PayPal balance before this transaction completes, the additional balance maybe used to complete your payment. 
@@ -180,7 +231,7 @@ render() {
       <ListView 
         dataSource={this.state.dataSource}
         renderRow={this.renderRow.bind(this)}
-        renderFooter={this.renderFooter}/>
+        renderFooter={this.renderFooter.bind(this)}/>
     );
   }
 }
